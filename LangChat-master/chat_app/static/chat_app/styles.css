@@ -1,0 +1,22 @@
+.message-username {
+    font-weight: bold;
+}
+
+#chat-box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 33%;
+    height: 50%;
+    border: solid black 2px;
+}
+
+#text-input {
+    position: absolute;
+    margin: auto;
+    top: 500px;
+    left: 0;
+    right: 0;
+    width: 33%;
+}

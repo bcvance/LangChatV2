@@ -1,0 +1,46 @@
+{% extends 'chat_app/layout.html' %}
+
+{% block body %}
+<div>
+    <h3>Welcome to LangChat! To get started, please enter the following information:</h3>
+    <form id="start-chat-form" method="post" action="{% url 'chat' %}">
+        {% csrf_token %}
+        <!-- Assuming user only knows one language, maybe add support 
+            for multiple known languages later -->
+        <label for="know-languages">Language I Know</label>
+        <select id="know_languages" name="know-languages">
+            <option value="English">English</option>
+            <option value="German">German</option>
+            <option value="Russian">Russian</option>
+            <option value="Spanish">Spanish</option>
+        </select>
+        <label for="learning-languages">Language I'm Learning</label>
+        <select id="learning-languages" name="learning-languages">
+            <option value="English">English</option>
+            <option value="German">German</option>
+            <option value="Russian">Russian</option>
+            <option value="Spanish">Spanish</option>
+        </select>
+        <input type="text" name="username" placeholder="username">
+        <input type="text" name="room_name" placeholder="Room Name">
+        <button type="submit">Find Partner</button>
+    </form>
+</div>
+
+<!-- <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const body = document.querySelector('body');
+        const form = document.getElementById('start-chat-form');
+        const action = form.getAttribute('action')
+        const submit = document.querySelector('button');
+        const roomName = document.querySelector('input').value;
+        submit.onclick = (event) => {
+            event.preventDefault();
+            form.setAttribute('action', `${action}/${roomName}`);
+            submit.submit();
+        }
+    });  
+</script> -->
+
+
+{% endblock %}
