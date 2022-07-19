@@ -1,7 +1,7 @@
 {% extends 'chat_app/layout.html' %} 
 
 {% block body %}
-<p>{{ know_lang }}, {{ learning_lang }}</p>
+<span id="in-chat">In Chat: </span><span id="users"></span>
 <div class="chat container">
     <!-- {% for message in messages %}
         <div class="message">
@@ -21,14 +21,35 @@
 {{ username|json_script:"username"}}
 <script type="text/javascript">
     const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    // let api_url = `http://${window.location.host}/api/users/${roomName}`
+    // fetch(api_url)
+    // .then(data => {
+    //     return data.json();
+    // })
+    // .then(users => {
+    //     if (users['fields']['user2']) {
+    //         console.log("executed");
+    //         document.getElementById('users').innerHTML = `${users['fields']['user1']}`;
+    //     }
+    //     else {
+    //         document.getElementById('users').innerHTML = `${users['fields']['user1']}`;
+    //     }
+    // });
+    // .then(users => {
+    //     if (users.length === 1) {
+    //         document.getElementById('users').innerHTML = users[0].username;
+    //     }
+    //     else {
+    //         document.getElementById('users').innerHTML = `${users[0].username}, ${users[1].username}`;
+    //     }
+    // });
     const username = JSON.parse(document.getElementById('username').textContent);
     let url = `ws://${window.location.host}/ws/socket-server/${roomName}/`;
     const chatSocket = new WebSocket(url);
     chatSocket.onmessage = (event) => {
         let data = JSON.parse(event.data);
         console.log('Data:', data);
-
-        if(data.type === 'chat'){
+        if(data.type === 'chat' || data.type === 'indiv_message'){
             const message_username = data.message_username
             if(message_username === username){
                 let messages = document.getElementById('chat-box');
@@ -42,6 +63,31 @@
                     <p><span style="color: blue;">${message_username}: </span>${data.message}</p>
                 </div>`);
             }
+        }
+        else if(data.type === 'connection'){
+            const message_username = data.message_username;
+            const message_user_id = data.message_user_id;
+
+            if(message_username === username){
+                let messages = document.getElementById('chat-box');
+                messages.insertAdjacentHTML('beforeend', `<div>
+                    <p><span style="color: red;">${message_username}: </span>${data.message}</p>
+                </div>`);
+            }
+            else{
+                chatSocket.send(JSON.stringify({
+                    'message': `you have been matched with ${username}!`,
+                    'username': username,
+                    'message_username': message_username,
+                    'message_user_id': message_user_id,
+                    'type': 'indiv_message',
+                }))
+                let messages = document.getElementById('chat-box');
+                messages.insertAdjacentHTML('beforeend', `<div>
+                    <p><span style="color: blue;">${message_username}: </span>${data.message}</p>
+                </div>`);
+            }
+            document.getElementById('users').insertAdjacentHTML('beforeend', `<span>${message_username}</span>`);
         }
     }
     let form = document.getElementById('message-form');
