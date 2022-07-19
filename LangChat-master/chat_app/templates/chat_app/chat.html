@@ -1,7 +1,6 @@
 {% extends 'chat_app/layout.html' %} 
 
 {% block body %}
-<span id="in-chat">In Chat: </span><span id="users"></span>
 <div class="chat container">
     <!-- {% for message in messages %}
         <div class="message">
@@ -49,7 +48,7 @@
     chatSocket.onmessage = (event) => {
         let data = JSON.parse(event.data);
         console.log('Data:', data);
-        if(data.type === 'chat' || data.type === 'indiv_message'){
+        if(data.type === 'chat'){
             const message_username = data.message_username
             if(message_username === username){
                 let messages = document.getElementById('chat-box');
@@ -64,6 +63,12 @@
                 </div>`);
             }
         }
+        else if(data.type == 'indiv_message') {
+            let messages = document.getElementById('chat-box');
+            messages.insertAdjacentHTML('beforeend', `<div>
+                <p>You have been matched with <span style="color: blue;">${data.username}</span></p>
+            </div>`);
+        }
         else if(data.type === 'connection'){
             const message_username = data.message_username;
             const message_user_id = data.message_user_id;
@@ -76,7 +81,6 @@
             }
             else{
                 chatSocket.send(JSON.stringify({
-                    'message': `you have been matched with ${username}!`,
                     'username': username,
                     'message_username': message_username,
                     'message_user_id': message_user_id,
@@ -87,7 +91,6 @@
                     <p><span style="color: blue;">${message_username}: </span>${data.message}</p>
                 </div>`);
             }
-            document.getElementById('users').insertAdjacentHTML('beforeend', `<span>${message_username}</span>`);
         }
     }
     let form = document.getElementById('message-form');

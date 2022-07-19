@@ -38,22 +38,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
         message_username = text_data_json['message_username']
 
         if 'type' in text_data_json:
             if text_data_json['type'] == 'indiv_message':
-                print(text_data_json)
                 message_user_id = text_data_json['message_user_id']
+                username = text_data_json['username']
                 await self.channel_layer.group_send(
                     f'user_{message_user_id}',
                     {
                         'type': 'indiv_message',
                         'message_username': message_username,
-                        'message': message,
+                        'username': username,
                     }
             )
             else:
+                message = text_data_json['message']
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -86,13 +86,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
     
     async def indiv_message(self, event):
-        message = event['message']
         message_username = event['message_username']
+        username = event['username']
 
         await self.send(text_data=json.dumps({
             'type': 'indiv_message',
-            'message': message,
             'message_username': message_username,
+            'username': username
         }))    
 
     async def disconnect(self, close_code):
