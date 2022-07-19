@@ -12,19 +12,26 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'chat_app/styles.css' %}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <nav class="navbar bg-light">
+        <nav class="navbar navbar-expand-sm navbar-custom">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1">LangChat</span>
+                <a href="/" class="navbar-brand mb-0 h1">LangChat</a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/chats">My Chats</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
-        <script src="" async defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
         {% block body %}
         {% endblock %}
     </body>

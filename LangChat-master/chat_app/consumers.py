@@ -20,33 +20,49 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': 'connected!'
+                'message': 'connected',
+                'message_username': self.scope['session']['username']
             }
         )
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        message_username = text_data_json['message_username']
 
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message_username': message_username,
+                'message': message,
             }
         )
 
     async def chat_message(self, event):
+        for key, value in event.items():
+            print(f'{key} => {value}')
         message = event['message']
+        message_username = event['message_username']
+
         await self.send(text_data=json.dumps({
             'type': 'chat',
-            'message': message
+            'message': message,
+            'message_username': message_username,
         }))
         
 
     async def disconnect(self, close_code):
         self.thread = threading.Thread(target=self.delete_users)
         self.thread.start()
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': 'disconnected',
+                'message_username': self.scope['session']['username']
+            }
+        )
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
@@ -54,5 +70,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         del self.thread
 
     def delete_users(self):
-        if TempUser.objects.get(id = self.scope["session"]["temp_user_id"]):
+        try:
             TempUser.objects.get(id = self.scope["session"]["temp_user_id"]).delete()
+        except:
+            pass

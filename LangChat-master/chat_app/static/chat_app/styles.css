@@ -1,22 +1,24 @@
-.message-username {
-    font-weight: bold;
+.navbar-custom {
+    background: #78c2ad;
+}
+
+.border-custom {
+    border-color: #78c2ad !important;
+}
+
+.btn {
+    background:#f3969a !important;
 }
 
 #chat-box {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    width: 33%;
+    border: 2px solid #78c2ad;
+    width: 50%;
     height: 50%;
-    border: solid black 2px;
+    border-radius:10px;
 }
 
-#text-input {
-    position: absolute;
-    margin: auto;
-    top: 500px;
-    left: 0;
-    right: 0;
-    width: 33%;
+input[type=text] {
+    padding:6px;
+    margin:10px 0;
+    border-radius:10px;
 }

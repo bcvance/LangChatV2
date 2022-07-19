@@ -1,30 +1,54 @@
 {% extends 'chat_app/layout.html' %}
 
 {% block body %}
-<div>
+<div class="mx-auto my-4 text-center">
     <h3>Welcome to LangChat! To get started, please enter the following information:</h3>
-    <form id="start-chat-form" method="post" action="{% url 'chat' %}">
-        {% csrf_token %}
-        <!-- Assuming user only knows one language, maybe add support 
-            for multiple known languages later -->
-        <label for="know-languages">Language I Know</label>
-        <select id="know_languages" name="know-languages">
-            <option value="English">English</option>
-            <option value="German">German</option>
-            <option value="Russian">Russian</option>
-            <option value="Spanish">Spanish</option>
-        </select>
-        <label for="learning-languages">Language I'm Learning</label>
-        <select id="learning-languages" name="learning-languages">
-            <option value="English">English</option>
-            <option value="German">German</option>
-            <option value="Russian">Russian</option>
-            <option value="Spanish">Spanish</option>
-        </select>
-        <input type="text" name="username" placeholder="username">
-        <input type="text" name="room_name" placeholder="Room Name">
-        <button type="submit">Find Partner</button>
-    </form>
+</div>
+<div class="center-screen">
+    <div class="card border-custom mx-auto" style="max-width: 30%; height: 500px">
+        <div class="card-body text-success mx-auto mb-0" style="width: 80%">
+          <form id="start-chat-form" method="post" action="{% url 'chat' %}">
+            {% csrf_token %}
+            <!-- Assuming user only knows one language, maybe add support 
+                for multiple known languages later -->
+            <div class="form-row my-4">
+                <div class="form-group col-10">
+                    <label for="know-languages">Language I Know</label>
+                    <select id="know_languages" name="know-languages" class="form-control">
+                        <option value="English">English</option>
+                        <option value="German">German</option>
+                        <option value="Russian">Russian</option>
+                        <option value="Spanish">Spanish</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="form-row my-4">
+                <div class="form-group col-10">
+                    <label for="learning-languages">Language I'm Learning</label>
+                    <select id="learning-languages" name="learning-languages" class="form-control">
+                        <option value="English">English</option>
+                        <option value="German">German</option>
+                        <option value="Russian">Russian</option>
+                        <option value="Spanish">Spanish</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="form-row my-4">
+                <div class="form-group col-10">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username" placeholder="username" class="form-control">
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group col-10">
+                    <button type="submit" class="btn">Find Partner</button>
+                </div>
+            </div>
+        </form>
+        </div>
+      </div>
 </div>
 
 <!-- <script>

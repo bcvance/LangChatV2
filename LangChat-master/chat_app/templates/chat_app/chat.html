@@ -8,15 +8,20 @@
             <p><span class="message-username">message.username: </span><span class="message-content">message.content</span></p>
         </div>
     {% endfor %} -->
-        <div id="chat-box"></div>
-        <form action="" id="message-form">
-            <input type="text" name="message" placeholder="Type message here.">
-        </form>
+        <div id="chat-box" class="mx-auto mb-3 p-3" style="height: 500px;"></div>
+        <div class="mx-auto" style="text-align: center;">
+            <form action="" id="message-form">
+                <input type="text" name="message" placeholder="Type message here.">
+                <button type="submit" class="btn ms-1">Send</button>
+            </form>
+        </div>
 </div>
 
 {{ room_name|json_script:"room-name" }}
+{{ username|json_script:"username"}}
 <script type="text/javascript">
     const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    const username = JSON.parse(document.getElementById('username').textContent);
     let url = `ws://${window.location.host}/ws/socket-server/${roomName}/`;
     const chatSocket = new WebSocket(url);
     chatSocket.onmessage = (event) => {
@@ -24,10 +29,19 @@
         console.log('Data:', data);
 
         if(data.type === 'chat'){
-            let messages = document.getElementById('chat-box');
-            messages.insertAdjacentHTML('beforeend', `<div>
-                    <p>${data.message}</p>
+            const message_username = data.message_username
+            if(message_username === username){
+                let messages = document.getElementById('chat-box');
+                messages.insertAdjacentHTML('beforeend', `<div>
+                    <p><span style="color: red;">${message_username}: </span>${data.message}</p>
                 </div>`);
+            }
+            else{
+                let messages = document.getElementById('chat-box');
+                messages.insertAdjacentHTML('beforeend', `<div>
+                    <p><span style="color: blue;">${message_username}: </span>${data.message}</p>
+                </div>`);
+            }
         }
     }
     let form = document.getElementById('message-form');
@@ -35,9 +49,16 @@
         event.preventDefault();
         let message = event.target.message.value;
         chatSocket.send(JSON.stringify({
-            'message': message
+            'message': message,
+            'message_username': username
         }))
         form.reset();
     })
+
+    const body = document.querySelector('body');
+    body.onbeforeunload = () => {
+        chatSocket.close();
+    }
+
 </script>
 {% endblock %}

@@ -16,11 +16,14 @@ def chat(request):
     know_languages = request.POST["know-languages"]
     learning_languages = request.POST["learning-languages"]
     username = request.POST["username"]
+    request.session["username"] = username
     try:
         match = TempUser.objects.filter(knows=learning_languages, learning=know_languages).first()
+        print("found match")
         room_name = match.room_name.id
         match.delete()
-    except ObjectDoesNotExist:
+    except (ObjectDoesNotExist, AttributeError) as e:
+        print("caught exception")
         new_room = ChatRoom.objects.create()
         temp_user = TempUser.objects.create(username=username, knows=know_languages, learning=learning_languages, room_name=new_room)
         request.session["temp_user_id"] = temp_user.id
