@@ -7,7 +7,7 @@
             <p><span class="message-username">message.username: </span><span class="message-content">message.content</span></p>
         </div>
     {% endfor %} -->
-        <div id="chat-box" class="mx-auto mb-3 p-3" style="height: 500px;"></div>
+        <div id="chat-box" class="mx-auto my-4 p-3" style="height: 500px;"></div>
         <div class="mx-auto" style="text-align: center;">
             <form action="" id="message-form">
                 <input type="text" name="message" placeholder="Type message here.">
@@ -99,7 +99,8 @@
         let message = event.target.message.value;
         chatSocket.send(JSON.stringify({
             'message': message,
-            'message_username': username
+            'message_username': username,
+            
         }))
         form.reset();
     })

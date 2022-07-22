@@ -52,16 +52,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         'username': username,
                     }
             )
-            else:
-                message = text_data_json['message']
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        'type': 'chat_message',
-                        'message_username': message_username,
-                        'message': message,
-                    }
-                )
+        else:
+            message = text_data_json['message']
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message_username': message_username,
+                    'message': message,
+                }
+            )
 
     async def chat_message(self, event):
         message = event['message']
