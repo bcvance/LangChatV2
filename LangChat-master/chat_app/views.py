@@ -14,7 +14,10 @@ germ_speakers = Queue()
 
 # Create your views here.
 def index(request):
-    return render(request, "chat_app/index.html")
+    num_online = OnlineUser.objects.all().count()
+    return render(request, "chat_app/index.html", context={
+        "num_online": num_online,
+    })
 
 def chat(request):
     know_languages = request.POST["know-languages"]

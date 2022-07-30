@@ -23,3 +23,7 @@ input[type=text] {
     margin:10px 0;
     border-radius:10px;
 }
+
+#num_online {
+    color: #4c7d6f;
+}

@@ -4,6 +4,13 @@
 <div class="mx-auto my-4 text-center">
     <h3>Welcome to LangChat! To get started, please enter the following information:</h3>
 </div>
+
+{% if num_online == 1 %}
+    <h5 class="ms-4" id="num_online">{{ num_online }} User Online</h5>
+{% else %}
+<h5 class="ms-4" id="num_online">{{ num_online }} Users Online</h5>
+{% endif %}
+
 <div class="center-screen">
     <div class="card border-custom mx-auto" style="max-width: 30%; height: 500px">
         <div class="card-body text-success mx-auto mb-0" style="width: 80%">
